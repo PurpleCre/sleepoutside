@@ -1,9 +1,4 @@
 
-//BUG ISSUE: CartItem was not an array when calling CartItems.Map in cart.js
-//when I tried to renderCartContents() It sets the localStorage["so-cart"] 
-// to a single object, not an array
-//we also needed to add the getLocalStorage import function to pull the data
-
 //added the getLocalStorage function from  
 import { getLocalStorage, setLocalStorage } from "./utils.mjs";
 import ProductData from "./ProductData.mjs";
