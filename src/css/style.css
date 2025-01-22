@@ -220,3 +220,23 @@ footer {
   font-size: var(--small-font);
   padding: 1em;
 }
+
+/* CSS for the search */
+.search {
+  margin: 1rem auto;
+  max-width: 600px;
+  padding: 0 1rem;
+}
+
+.search-input {
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.search-input:focus {
+  outline: 2px solid #303030;
+  border-color: transparent;
+}
