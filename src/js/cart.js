@@ -1,9 +1,13 @@
 import { getLocalStorage } from "./utils.mjs";
 
+const cartItems = getLocalStorage("so-cart");
+const htmlItems = cartItems.map((item) => cartItemTemplate(item));
+const htmlTotal = cartItemTotalTemplate();
+const divCheckout = document.getElementById("cart-checkout");
+
 function renderCartContents() {
-  const cartItems = getLocalStorage("so-cart");
-  const htmlItems = cartItems.map((item) => cartItemTemplate(item));
   document.querySelector(".product-list").innerHTML = htmlItems.join("");
+  divCheckout.innerHTML = htmlTotal;
 }
 
 function cartItemTemplate(item) {
@@ -24,5 +28,29 @@ function cartItemTemplate(item) {
 
   return newItem;
 }
+
+function addTotalCart() {
+  if (!cartItems || cartItems.length === 0) return divCheckout.classList.add("hide");
+  const total = cartItems.reduce((sum, item) => sum + item.FinalPrice, 0);
+  return total;
+}
+
+function cartItemTotalTemplate() {
+  const total = addTotalCart();
+  return `<label class="title">Checkout</label>
+    <div class="details">
+      <span>Your cart subtotal:</span>
+      <span>$${total}</span>
+      <span>Discount:</span>
+      <span>N/a</span>
+    </div>
+    <div class="checkout-footer">
+      <label class="price"><sup>$</sup>${total}</label>
+      <button class="checkout-btn">Checkout</button>
+    </div>
+  </div>`
+}
+
+addTotalCart()
 
 renderCartContents();
