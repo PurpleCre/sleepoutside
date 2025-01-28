@@ -28,6 +28,7 @@ export default class ProductDetails {
           // add products array to ocal storage
           setLocalStorage("so-cart", products);
           alert(`${this.product.NameWithoutBrand} added to cart`)
+          window.location.reload();
     }
    
     // Generate HTML display

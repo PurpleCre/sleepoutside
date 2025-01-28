@@ -11,4 +11,3 @@ const list = new ProductListing("tents", data, prodEl);
 list.init();
 
 // rebase
-
