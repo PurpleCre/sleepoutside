@@ -35,7 +35,7 @@ export function renderListWithTemplate(templateFn, parentElement, list, position
 }
 
 // function to take an optional object and a template and insert the objects as HTML into the DOM
-export function renderWithTemplate(template, parentElement, data, callback) {
+export function renderWithTemplate(template, parentElement, callback, data) {
   parentElement.insertAdjacentHTML("afterbegin", template);
   //if there is a callback...call it and pass data
   if (callback) callback(data);
@@ -54,10 +54,9 @@ export async function loadHeaderFooter() {
   const footerTemplate = await loadTemplate("../partials/footer.html");
   const footerElement = document.querySelector("#main-footer");
 
-  renderWithTemplate(headerTemplate, headerElement);
+  renderWithTemplate(headerTemplate, headerElement, setSuperscript);
   renderWithTemplate(footerTemplate, footerElement);
 }
-
 
 // set a listener for both touchend and click
 export function setClick(selector, callback) {
@@ -67,4 +66,18 @@ export function setClick(selector, callback) {
   });
   qs(selector).addEventListener("click", callback);
 
+}
+
+// Get cart item count and dispay superscript number
+export async function setSuperscript() {
+  // display superscript on cart icon
+  const countEl = document.querySelector(".count");
+
+  if (getLocalStorage("so-cart")) {
+    const count = getLocalStorage("so-cart").length;
+    countEl.classList.remove("hide");
+    countEl.innerHTML = count;
+  } else {
+    countEl.classList.add("hide");
+  }
 }
