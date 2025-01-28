@@ -1,4 +1,4 @@
-import { qs, renderListWithTemplate, getLocalStorage } from "./utils.mjs";
+import { qs, renderListWithTemplate, getLocalStorage, setLocalStorage } from "./utils.mjs";
 
 //Template function for a single cart item
 function cartItemTemplate(item) {
@@ -7,6 +7,7 @@ function cartItemTemplate(item) {
 
   return `
     <li class="cart-card divider">
+      <button class="remove" data-id="${item.Id}">❌</button>
       <a href="#" class="cart-card__image">
         <img src="${item.Image}" alt="${item.Name}" />
       </a>
@@ -55,8 +56,38 @@ export default class ShoppingCart {
   init() {
     this.cartItems = getLocalStorage(this.key) || []
     this.renderCartContents();
+    this.attachListeners();
   }
 
+  attachListeners() {
+    let removeBtns = document.querySelectorAll(".remove");
+
+    removeBtns.forEach((btn) => {
+      btn.addEventListener("click", (e) => {
+        // get product Id
+        let id = e.target.dataset.id;
+        // Get cart items from local storage
+        const cartItems = getLocalStorage("so-cart");
+        // remove target item
+        let newCartItems = cartItems.filter((item) => item.Id !== id);
+        // add new cart items to local storage
+        if (newCartItems.length < 1) {
+          localStorage.removeItem("so-cart");
+        } else {
+          setLocalStorage("so-cart", newCartItems);
+        }
+        // render cart contents
+        window.location.reload();
+      });
+    });
+    // Remove item from cart
+    this.listElement.addEventListener("click", (event) => {
+      if (event.target.classList.contains("remove")) {
+        const id = parseInt(event.target.dataset.id);
+        this.removeItem(id);
+      }
+    });
+  }
   // Render all cart items and the checkout summary
   renderCartContents() {
     // Render cart items with a reusable list-rendering utility
