@@ -6,6 +6,8 @@ loadHeaderFooter();
 
 const category = getParams("category");
 // first create an instance of our ProductData class.
+document.getElementById("title").innerText = `Top Products: ${category}`;
+// then update page title with category
 const dataSource = new ProductData();
 // then get the element we want the product list to render in
 const listElement = document.querySelector(".product-list");

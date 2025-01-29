@@ -19,10 +19,8 @@ export default class ProductData {
   }
 
   async findProductById(id) {
-    const products = await this.getData(this.category);
-    return products.find((item) => item.Id === id);
-    // const response = await fetch(`${baseURL}product/${id}`);
-    // const data = await convertToJson(response);
-    // return data.Result;
+    const response = await fetch(`${baseURL}product/${id}`);
+    const data = await convertToJson(response);
+    return data.Result;
   }
 }
