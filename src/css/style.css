@@ -158,6 +158,20 @@ button {
   margin: auto;
 }
 
+/* Category Icons */
+.categories {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  text-align: center;
+  gap: 1em;
+}
+
+.categories a {
+  text-decoration: none;
+  color: var(--dark-grey);
+  font-weight: bold;
+}
+
 .products {
   padding: 0.5em;
 }
