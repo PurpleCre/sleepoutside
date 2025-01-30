@@ -25,13 +25,30 @@ export default class ProductListing {
         this.dataSource = dataSource;
         this.listEl = listEl;
     }
+
+    // Sort the products/list by price or name
+    sortList(list, criteria) {
+    if (criteria === "name") {
+      return list.sort((a, b) => a.Name.localeCompare(b.Name));
+    } else if (criteria === "price") {
+      return list.sort((a, b) => a.FinalPrice - b.FinalPrice);
+    }
+    return list;
+  }
     async init() {
         // our dataSource will return a Promise...so we can use await to resolve it.
         const list = await this.dataSource.getData(this.category);
         // filter the list to 4 items
         const filteredList = this.filterList(list)
         // render the list
-        this.renderList(filteredList);
+        this.renderList(filteredList); 
+
+        // Sort the products/list by price or name
+        const sortElement = document.getElementById("sort");
+        sortElement.addEventListener("change", (event) => {
+            const sortedList = this.sortList(list, event.target.value);
+            this.renderList(sortedList);
+        });
     }
     filterList(list, num = 4) {
         return list.slice(0, num);
