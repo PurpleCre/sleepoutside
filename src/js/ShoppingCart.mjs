@@ -38,8 +38,10 @@ function cartTotalTemplate(items) {
     </div>
     <div class="checkout-footer">
       <label class="price"><sup>$</sup>${total.toFixed(2)}</label>
-      <button class="checkout-btn">Checkout</button>
-    </div>`;
+      <form action="/checkout/index.html" method="post">
+      <button type="submit">Checkout</button>
+      </form>
+      </div>`;
 }
 
 // Main ShoppingCart class
@@ -60,6 +62,7 @@ export default class ShoppingCart {
   }
 
   attachListeners() {
+    let checkoutBtn = document.getElementById("#checkout")
     let removeBtns = document.querySelectorAll(".remove");
 
     removeBtns.forEach((btn) => {
