@@ -1,4 +1,4 @@
-import { getLocalStorage, setLocalStorage } from "./utils.mjs";
+import { getLocalStorage, setLocalStorage, setSuperscript } from "./utils.mjs";
 
 export default class ProductDetails {
   constructor(productId, dataSource) {
@@ -37,6 +37,7 @@ export default class ProductDetails {
 
     // Notify user
     alert(`${this.product.NameWithoutBrand} added to cart`);
+
     setSuperscript();
   }
 
