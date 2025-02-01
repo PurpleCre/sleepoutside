@@ -1,7 +1,7 @@
 import { renderListWithTemplate } from "./utils.mjs";
 
 function productCardTemplate(product) {
-    let html =  `<li class="product-card">
+    let html = `<li class="product-card">
         <a href="product_pages/index.html?product=${product.Id}">
         <img
             src="${product.Image}"
@@ -11,7 +11,11 @@ function productCardTemplate(product) {
         <h2 class="card__name">${product.Name}</h2>
         <p class="product-card__price">$${product.FinalPrice}</p>
     `
-    
+    if (product.FinalPrice < product.SuggestedRetailPrice) {
+        const discount = product.SuggestedRetailPrice - product.FinalPrice;
+        html += `<p class="product-card__discount">Enjoy a $${discount.toFixed(2)} discount!!!!</p>`
+    }
+
     html += `</a>
         </li>
     `
