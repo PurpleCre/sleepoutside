@@ -73,10 +73,14 @@ export async function setSuperscript() {
   // display superscript on cart icon
   const countEl = document.querySelector(".count");
 
-  if (getLocalStorage("so-cart")) {
-    const count = getLocalStorage("so-cart").length;
+  // Retrieve cart items from local storage
+  let cart = getLocalStorage("so-cart") || [];
+  // Calculate total quantity of items in the cart
+  let totalItems = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+  // Update the UI based on cart quantity
+  if (totalItems > 0) {
     countEl.classList.remove("hide");
-    countEl.innerHTML = count;
+    countEl.innerHTML = totalItems;
   } else {
     countEl.classList.add("hide");
   }
