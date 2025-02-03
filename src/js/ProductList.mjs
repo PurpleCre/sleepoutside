@@ -1,53 +1,61 @@
+import { renderListWithTemplate } from "./utils.mjs";
+
 function productCardTemplate(product) {
-    return `<li class="product-card">
-      <a href="product_pages/?product=${product.Id}">
-        <img src="${product.Image}" alt="${product.Name}" />
+  let html = `<li class="product-card">
+        <a href="../product_pages/index.html?product=${product.Id}">
+        <img
+            src="${product.Images.PrimaryMedium}"
+            alt="Image of ${product.Name}"
+        />
         <h3 class="card__brand">${product.Brand.Name}</h3>
-        <h2 class="card__name">${product.NameWithoutBrand}</h2>
+        <h2 class="card__name">${product.Name}</h2>
         <p class="product-card__price">$${product.FinalPrice}</p>
-      </a>
-    </li>`;
+    `;
+
+  html += `</a>
+        </li>
+    `;
+
+  return html;
+}
+
+export default class ProductListing {
+  constructor(category, dataSource, listEl) {
+    this.category = category;
+    this.dataSource = dataSource;
+    this.listEl = listEl;
   }
-  
-  export default class ProductList {
-    constructor(category, dataSource, listElement) {
-      this.category = category;
-      this.dataSource = dataSource;
-      this.listElement = listElement;
-      this.allProducts = [];
+
+  // Sort the products/list by price or name
+  sortList(list, criteria) {
+    if (criteria === "name") {
+      return list.sort((a, b) => a.Name.localeCompare(b.Name));
+    } else if (criteria === "price") {
+      return list.sort((a, b) => a.FinalPrice - b.FinalPrice);
     }
-  
-    async init() {
-      const list = await this.dataSource.getData();
-      this.allProducts = list;
-      const filteredList = this.filterTents(list);
-      this.renderList(filteredList);
-      this.initSearch();
-    }
-  
-    filterTents(list) {
-      return list.filter(item => 
-        ["880RR", "985RF", "985PR", "344YJ"].includes(item.Id)
-      );
-    }
-  
-    renderList(list) {
-      this.listElement.innerHTML = list.map(productCardTemplate).join("");
-    }
-  
-    initSearch() {
-      const searchInput = document.getElementById("searchInput");
-      searchInput.addEventListener("input", (e) => {
-        const query = e.target.value.toLowerCase();
-        if (!query.trim()) {
-          this.renderList(this.filterTents(this.allProducts));
-        } else {
-          const searchResults = this.allProducts.filter(item => 
-            item.Name.toLowerCase().includes(query.toLowerCase()) ||
-            item.NameWithoutBrand.toLowerCase().includes(query.toLowerCase())
-          );
-          this.renderList(searchResults);
-        }
-      });
-    }
+    return list;
   }
+  async init() {
+    // our dataSource will return a Promise...so we can use await to resolve it.
+    const list = await this.dataSource.getData(this.category);
+    // filter the list to 4 items
+    const filteredList = this.filterList(list);
+    // render the list
+    this.renderList(filteredList);
+
+    // Sort the products/list by price or name
+    const sortElement = document.getElementById("sort");
+    sortElement.addEventListener("change", (event) => {
+      const sortedList = this.sortList(list, event.target.value);
+      this.renderList(sortedList);
+    });
+  }
+  filterList(list, num = 4) {
+    return list.slice(0, num);
+    // return list.filter((product) => product.Image)
+  }
+  // render template lists
+  renderList(list) {
+    renderListWithTemplate(productCardTemplate, this.listEl, list);
+  }
+}
