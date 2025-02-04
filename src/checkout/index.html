@@ -19,30 +19,21 @@
       <fieldset>
         <legend>Shipping</legend>
         <div class="checkout__name">
-          <label for="fname">First Name</label>
-          <input name="fname" required />
-          <label for="lname">Last Name</label>
-          <input name="lname" required />
+          <label>First Name<input type="text" name="fname" id="fname" required /></label>
+          <label>Last Name<input type="text" name="lname" id="lname" required /></label>
         </div>
         <div class="checkout__address">
-          <label for="street">Street</label>
-          <input name="street" required />
-          <label for="city">City</label>
-          <input name="city" required />
-          <label for="state">State</label>
-          <input name="state" required />
-          <label for="zip">Zip</label>
-          <input name="zip" id="zip" required />
+          <label>Street<input type="text" name="street" id="street" required /></label>
+          <label>City<input type="text" name="city" id="city" required /></label>
+          <label>State<input type="text" name="state" id="state" required /></label>
+          <label>Zip<input type="text" name="zip" id="zip" required /></label>
         </div>
       </fieldset>
       <fieldset>
         <legend>Payment</legend>
-        <label for="cardNumber">Card number</label>
-        <input name="cardNumber" required />
-        <label for="expiration">Expiration</label>
-        <input name="expiration" required />
-        <label for="code">Security Code</label>
-        <input name="code" required />
+        <label>Card Number<input type="number" name="cardNumber" id="cardNumber" required /></label>
+        <label>Expiration<input type="number" name="expiration" id="expiration" required /></label>
+        <label>Security COde<input type="text" name="code" id="code" required /></label>
       </fieldset>
       <fieldset class="checkout-summary">
         <legend>Order Summary</legend>
@@ -64,9 +55,9 @@
             <p id="orderTotal"></p>
           </li>
         </ul>
+        <button id="checkoutSubmit" type="submit">Checkout</button>
       </fieldset>
 
-      <button id="checkoutSubmit" type="submit">Checkout</button>
     </form>
   </section>
   </main>
