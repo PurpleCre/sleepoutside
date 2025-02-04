@@ -40,6 +40,11 @@ export default class ProductDetails {
 
     setSuperscript();
   }
+   // Add breadcrumbs to the page
+  handleBrandCrumbs() {
+    const breadcrumbsElement = document.querySelector("#breadcrumbs");
+    breadcrumbsElement.innerHTML = `<span class="c">${this.product.Category}</span>`
+  }
 
   // Generate HTML display
   renderProductDetails(product) {
