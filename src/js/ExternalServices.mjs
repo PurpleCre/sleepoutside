@@ -10,10 +10,12 @@ function convertToJson(res) {
 }
 
 export default class ExternalServices {
-  constructor(category) {
-    this.category = category;
-    this.baseURL = baseURL.replace("http://", "https://");
+  constructor() {
+    // Make sure baseURL ends with a slash and uses HTTPS
+    let url = baseURL.endsWith("/") ? baseURL : baseURL + "/";
+    this.baseURL = url.replace("http://", "https://");
   }
+
   async getData(category) {
     try {
       const response = await fetch(
