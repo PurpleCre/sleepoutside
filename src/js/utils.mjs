@@ -25,7 +25,13 @@ export function getParams(param) {
 }
 
 // function to take a list of objects and a template and insert the objects as HTML into the DOM
-export function renderListWithTemplate(templateFn, parentElement, list, position = "afterbegin", clear = false) {
+export function renderListWithTemplate(
+  templateFn,
+  parentElement,
+  list,
+  position = "afterbegin",
+  clear = false,
+) {
   const htmlStrings = list.map(templateFn);
   // if clear is true we need to clear out the contents of the parent.
   if (clear) {
@@ -65,23 +71,36 @@ export function setClick(selector, callback) {
     callback();
   });
   qs(selector).addEventListener("click", callback);
-
 }
 
 // Get cart item count and dispay superscript number
 export async function setSuperscript() {
-  // display superscript on cart icon
-  const countEl = document.querySelector(".count");
+  try {
+    // display superscript on cart icon
+    const countEl = document.querySelector(".cart-count");
+    if (!countEl) return; // Exit if element not found
 
-  // Retrieve cart items from local storage
-  let cart = getLocalStorage("so-cart") || [];
-  // Calculate total quantity of items in the cart
-  let totalItems = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
-  // Update the UI based on cart quantity
-  if (totalItems > 0) {
-    countEl.classList.remove("hide");
-    countEl.innerHTML = totalItems;
-  } else {
-    countEl.classList.add("hide");
+    // Retrieve cart items from local storage
+    const cart = getLocalStorage("so-cart");
+    if (!Array.isArray(cart)) {
+      setLocalStorage("so-cart", []);
+      return;
+    }
+
+    // Calculate total quantity of items in the cart
+    const totalItems = cart.reduce(
+      (sum, item) => sum + (item.quantity || 1),
+      0,
+    );
+
+    // Update the UI based on cart quantity
+    if (totalItems > 0) {
+      countEl.textContent = totalItems;
+      countEl.classList.remove("hide");
+    } else {
+      countEl.classList.add("hide");
+    }
+  } catch (err) {
+    console.error("Error in setSuperscript:", err);
   }
 }
