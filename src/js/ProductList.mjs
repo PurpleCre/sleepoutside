@@ -35,9 +35,13 @@ export default class ProductList {
     }
     return list;
   }
+
   async init() {
     try {
       const list = await this.dataSource.getData(this.category);
+      if (!list) {
+        throw new Error("No data received from server");
+      }
 
       // filter the list to 4 items
       const filteredList = this.filterList(list);
@@ -56,12 +60,16 @@ export default class ProductList {
       });
     } catch (error) {
       console.error("Error in init:", error);
+      if (this.listEl) {
+        this.listEl.innerHTML = `<li class="error">Error loading products. Please try again later.</li>`;
+      }
     }
   }
+
   filterList(list, num = 4) {
     return list.slice(0, num);
-    // return list.filter((product) => product.Image)
   }
+
   // render template lists
   renderList(list) {
     renderListWithTemplate(productCardTemplate, this.listEl, list);

@@ -11,13 +11,16 @@ function convertToJson(res) {
 
 export default class ExternalServices {
   constructor() {
-    // Make sure baseURL ends with a slash
-    this.baseURL = baseURL.endsWith("/") ? baseURL : baseURL + "/";
+    // Make sure baseURL ends with a slash and uses HTTPS
+    let url = baseURL.endsWith("/") ? baseURL : baseURL + "/";
+    this.baseURL = url.replace("http://", "https://");
   }
 
   async getData(category) {
     try {
-      const response = await fetch(baseURL + `products/search/${category}`);
+      const response = await fetch(
+        this.baseURL + `products/search/${category}`,
+      );
       const data = await convertToJson(response);
       return data.Result;
     } catch (error) {
