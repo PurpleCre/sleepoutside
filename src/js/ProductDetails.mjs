@@ -7,14 +7,15 @@ export default class ProductDetails {
     this.dataSource = dataSource;
   }
   async init() {
-    // use our datasource to get the details for the current product. findProductById will return a promise! use await or .then() to process it
-    this.product = await this.dataSource.findProductById(this.productId)
-    // once we have the product details we can render out the HTML
-    this.renderProductDetails(this.product)
-    // once the HTML is rendered we can add a listener to Add to Cart button
-    // Notice the .bind(this). Our callback will not work if we don't include that line. Review the readings from this week on 'this' to understand why.
+    // Retrieve product details and render HTML
+    this.product = await this.dataSource.findProductById(this.productId);
+    this.renderProductDetails(this.product);
+
+    // Attach listeners for both buttons
     document.getElementById("addToCart")
       .addEventListener("click", this.addToCart.bind(this));
+    document.getElementById("addToWishlist")
+      .addEventListener("click", this.addToWishlist.bind(this));
   }
   addToCart() {
     // Retrieve the cart from local storage or initialize an empty array
@@ -40,7 +41,24 @@ export default class ProductDetails {
 
     setSuperscript();
   }
-   // Add breadcrumbs to the page
+
+  addToWishlist() {
+    let wishlist = getLocalStorage("so-wishlist") || [];
+
+    // Check if the product is already in the wishlist
+    let existing = wishlist.find(item => item.Id === this.product.Id);
+    if (existing) {
+      alert("This item is already in your wishlist.");
+      return;
+    }
+    // Optionally, you can include quantity or other properties
+    this.product.quantity = 1;
+    wishlist.push(this.product);
+    setLocalStorage("so-wishlist", wishlist);
+    alert(`${this.product.NameWithoutBrand} added to wishlist`);
+  }
+
+  // Add breadcrumbs to the page
   handleBrandCrumbs() {
     const breadcrumbsElement = document.querySelector("#breadcrumbs");
     breadcrumbsElement.innerHTML = `<span class="c">${this.product.Category}</span>`
@@ -48,29 +66,32 @@ export default class ProductDetails {
 
   // Generate HTML display
   renderProductDetails(product) {
-    let newProd = "";
-
     // if (product.FinalPrice < product.SuggestedRetailPrice) {
     //   const discount = product.SuggestedRetailPrice - product.FinalPrice;
     //   newProd += `<p class="product-card__discount">Enjoy a $${discount.toFixed(2)} discount!!!!</p>`
     // }
 
-    newProd += `<h3>${product.Brand.Name}</h3>
-        <h2 class="divider">${product.NameWithoutBrand}</h2>
-        <img
-          class="divider"
-          src="${product.Images.PrimaryLarge}"
-          alt="${product.NameWithoutBrand}"
-        />
-        <p class="product-card__price">${product.ListPrice}</p>
-        <p class="product__color">${product.Colors[0].ColorName}</p>
-        <p class="product__description">
-        ${product.DescriptionHtmlSimple}
-        </p>
-        <div class="product-detail__add">
-          <button id="addToCart" data-id="${product.Id}">Add to Cart</button>
-        </div>`;
+    let newProd = `
+    <h3>${product.Brand.Name}</h3>
+    <h2 class="divider">${product.NameWithoutBrand}</h2>
+    <img
+      class="divider"
+      src="${product.Images.PrimaryLarge}"
+      alt="${product.NameWithoutBrand}"
+    />
+    <p class="product-card__price">${product.ListPrice}</p>
+    <p class="product__color">${product.Colors[0].ColorName}</p>
+    <p class="product__description">
+      ${product.DescriptionHtmlSimple}
+    </p>
+    <div class="product-detail__actions">
+      <button id="addToCart" data-id="${product.Id}">Add to Cart</button>
+      <button id="addToWishlist" data-id="${product.Id}">Add to Wishlist</button>
+    </div>
+  `;
 
     document.querySelector(".product-detail").innerHTML = newProd;
   }
 }
+
+

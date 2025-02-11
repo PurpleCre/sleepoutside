@@ -85,7 +85,7 @@ header {
   margin-top: -1.3em;
 }
 
-.logo--square > div {
+.logo--square>div {
   margin-top: -1.7em;
 }
 
@@ -95,35 +95,35 @@ header {
   padding: 20px;
   border: 1px solid #ddd;
   margin-bottom: 20px;
-  max-width: 700px; 
-  margin-left: auto; 
-  margin-right: auto; 
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .newsletter-signup h2 {
   margin-top: 0;
   margin-bottom: 20px;
-  font-size: 24px; 
-  text-align: left; 
+  font-size: 24px;
+  text-align: left;
 }
 
 .newsletter-signup form {
   display: flex;
   gap: 10px;
-  flex-wrap: wrap; 
+  flex-wrap: wrap;
 }
 
 .newsletter-signup input[type="email"] {
-  flex: 1; 
+  flex: 1;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
   font-size: 16px;
-  margin-bottom: 0; 
+  margin-bottom: 0;
 }
 
 .newsletter-signup button[type="submit"] {
-  background-color: #4CAF50; 
+  background-color: #4CAF50;
   color: #fff;
   padding: 10px 20px;
   border: none;
@@ -133,19 +133,19 @@ header {
 }
 
 .newsletter-signup button[type="submit"]:hover {
-  background-color: #3e8e41; 
+  background-color: #3e8e41;
 }
 
 .newsletter-signup .success-message {
-  width: 100%; 
-  margin-top: 10px; 
+  width: 100%;
+  margin-top: 10px;
   padding: 10px;
-  background-color: #dff0d8; 
-  color: #3c763d; 
-  border: 1px solid #d6e9c6; 
+  background-color: #dff0d8;
+  color: #3c763d;
+  border: 1px solid #d6e9c6;
   border-radius: 4px;
   font-size: 14px;
-  text-align: center; 
+  text-align: center;
 }
 
 /* utility classes */
@@ -166,6 +166,13 @@ button {
 
 .divider {
   border-bottom: 2px solid var(--primary-color);
+}
+
+#addToWishlist {
+  margin-top: 10px;
+  background-color: #d0d0d0;
+  color: var(--dark-grey);
+  font-size: medium;
 }
 
 /* add this to class to hide element */
@@ -240,7 +247,8 @@ button {
   margin: auto;
 }
 
-.product-list {
+.product-list,
+.wishlist {
   display: flex;
   flex-flow: row wrap;
   justify-content: space-between;
@@ -338,7 +346,7 @@ button {
   gap: 12px;
 }
 
-#breadcrumbs .path{
+#breadcrumbs .path {
   text-transform: capitalize;
 }
 
@@ -433,23 +441,27 @@ button {
 .checkout-form {
   padding: 0.5em;
 }
+
 .checkout-form label {
   display: block;
 }
+
 .checkout-form input {
   width: 100%;
   font-size: 1.2em;
 }
 
-.checkout-summary > ul {
+.checkout-summary>ul {
   padding-left: 0;
   list-style-type: none;
 }
+
 .checkout-summary li {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
+
 .checkout-summary input {
   width: 25%;
   font-size: 1em;
