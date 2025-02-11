@@ -19,7 +19,7 @@ function productCardTemplate(product) {
   return html;
 }
 
-export default class ProductListing {
+export default class ProductList {
   constructor(category, dataSource, listEl) {
     this.category = category;
     this.dataSource = dataSource;
@@ -35,33 +35,49 @@ export default class ProductListing {
     }
     return list;
   }
-  async init() {
-    // our dataSource will return a Promise...so we can use await to resolve it.
-    const list = await this.dataSource.getData(this.category);
-    // filter the list to 4 items
-    const filteredList = this.filterList(list);
-    // render the list
-    this.renderList(filteredList);
 
-    // Sort the products/list by price or name
-    const sortElement = document.getElementById("sort");
-    sortElement.addEventListener("change", (event) => {
-      const sortedList = this.sortList(list, event.target.value);
-      this.renderList(sortedList);
-    });
+  async init() {
+    try {
+      const list = await this.dataSource.getData(this.category);
+      if (!list) {
+        throw new Error("No data received from server");
+      }
+
+      // filter the list to 4 items
+      const filteredList = this.filterList(list);
+
+      // render the list
+      this.renderList(filteredList);
+
+      // Add breadcrumbs
+      this.handleBrandCrumbs(list);
+
+      // Sort the products/list by price or name
+      const sortElement = document.getElementById("sort");
+      sortElement.addEventListener("change", (event) => {
+        const sortedList = this.sortList(list, event.target.value);
+        this.renderList(sortedList);
+      });
+    } catch (error) {
+      console.error("Error in init:", error);
+      if (this.listEl) {
+        this.listEl.innerHTML = `<li class="error">Error loading products. Please try again later.</li>`;
+      }
+    }
   }
+
   filterList(list, num = 4) {
     return list.slice(0, num);
-    // return list.filter((product) => product.Image)
   }
+
   // render template lists
   renderList(list) {
     renderListWithTemplate(productCardTemplate, this.listEl, list);
   }
 
   // Add breadcrumbs to the page
-  handleBrandCrumbs() {
+  handleBrandCrumbs(list) {
     const breadcrumbsElement = document.querySelector("#breadcrumbs");
-    breadcrumbsElement.innerHTML = `<span class="path">${this.category}</span> <span class="arrow">></span><span class="path">(${this.products.length} items)</span>`;
+    breadcrumbsElement.innerHTML = `<span class="path">${this.category}</span> <span class="arrow">></span><span class="path">(${list.length} items)</span>`;
   }
 }
