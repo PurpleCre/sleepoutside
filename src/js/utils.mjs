@@ -77,7 +77,7 @@ export function setClick(selector, callback) {
 export async function setSuperscript() {
   try {
     // display superscript on cart icon
-    const countEl = document.querySelector(".cart-count");
+    const countEl = document.querySelector(".count");
     if (!countEl) return; // Exit if element not found
 
     // Retrieve cart items from local storage
