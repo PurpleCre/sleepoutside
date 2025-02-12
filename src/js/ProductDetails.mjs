@@ -66,12 +66,13 @@ export default class ProductDetails {
 
   // Generate HTML display
   renderProductDetails(product) {
-    // if (product.FinalPrice < product.SuggestedRetailPrice) {
-    //   const discount = product.SuggestedRetailPrice - product.FinalPrice;
-    //   newProd += `<p class="product-card__discount">Enjoy a $${discount.toFixed(2)} discount!!!!</p>`
-    // }
+    let newProd = ""
+    if (product.FinalPrice < product.SuggestedRetailPrice) {
+      const discount = product.SuggestedRetailPrice - product.FinalPrice;
+      newProd += `<p class="product-card__discount">Enjoy a $${discount.toFixed(2)} discount!!!!</p>`
+    }
 
-    let newProd = `
+    newProd += `
     <h3>${product.Brand.Name}</h3>
     <h2 class="divider">${product.NameWithoutBrand}</h2>
     <img
